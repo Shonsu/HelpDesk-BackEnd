@@ -8,7 +8,6 @@ import java.util.List;
 @Getter
 @ToString
 public class TicketFormDto {
-    private Long categoryId;
     private Long subCategoryId;
     List<TicketFormFieldDto> ticketFormFieldDtos;
 }
