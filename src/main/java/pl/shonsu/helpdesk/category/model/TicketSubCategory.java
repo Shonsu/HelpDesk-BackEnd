@@ -1,4 +1,4 @@
-package pl.shonsu.helpdesk.ticket.model;
+package pl.shonsu.helpdesk.category.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "ticket_sub_category")
 @Getter
-class TicketSubCategory {
+public class TicketSubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false, nullable = false)
