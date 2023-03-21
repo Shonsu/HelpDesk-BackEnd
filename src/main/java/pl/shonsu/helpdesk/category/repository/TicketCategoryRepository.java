@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface TicketCategoryRepository extends JpaRepository<TicketCategory, Long> {
     List<TicketCategoryView> findAllBy();
+
+    List<TicketCategoryView> findByLabelContainingIgnoreCase(String searchText);
 }

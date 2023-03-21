@@ -29,4 +29,12 @@ class TicketCategoryService {
     public TicketCategory updateCategory(TicketCategory ticketCategory) {
         return ticketCategoryRepository.save(ticketCategory);
     }
+
+    public void deleteTicketCategory(Long id) {
+        ticketCategoryRepository.deleteById(id);
+    }
+
+    public List<TicketCategoryView> searchTicketCategories(String searchText) {
+        return ticketCategoryRepository.findByLabelContainingIgnoreCase(searchText);
+    }
 }
