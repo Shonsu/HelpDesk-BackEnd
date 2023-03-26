@@ -2,6 +2,7 @@ package pl.shonsu.helpdesk.ticket.controller.mapper;
 
 import pl.shonsu.helpdesk.ticket.controller.dto.TicketFormDto;
 import pl.shonsu.helpdesk.ticket.controller.dto.TicketFormFieldDto;
+import pl.shonsu.helpdesk.ticket.model.ControlType;
 import pl.shonsu.helpdesk.ticket.model.TicketForm;
 import pl.shonsu.helpdesk.ticket.model.TicketFormField;
 import pl.shonsu.helpdesk.ticket.model.TicketFormFieldOption;
@@ -12,13 +13,14 @@ public class TicketFormMapper {
 
     public static TicketForm mapToTicketForm(TicketFormDto ticketFormDto) {
         return TicketForm.builder()
+                .label(ticketFormDto.getLabel())
                 .subCategoryId(ticketFormDto.getSubCategoryId())
-                .ticketFormFieldList(mapToFieldList(ticketFormDto))
+                .ticketFormFields(mapToFieldList(ticketFormDto))
                 .build();
     }
 
     private static List<TicketFormField> mapToFieldList(TicketFormDto ticketFormDto) {
-        return ticketFormDto.getTicketFormFieldDtos().stream()
+        return ticketFormDto.getTicketFormFields().stream()
                 .map(TicketFormMapper::mapToField).toList();
     }
 
@@ -28,8 +30,9 @@ public class TicketFormMapper {
                 .label(ticketFormFieldDto.getLabel())
                 .required(ticketFormFieldDto.isRequired())
                 .order(ticketFormFieldDto.getOrder())
-                .controlType(ticketFormFieldDto.getControlType())
+                .controlType(ControlType.valueOf(ticketFormFieldDto.getControlType()))
                 .options(mapToFieldOptions(ticketFormFieldDto))
+                .type(ticketFormFieldDto.getType())
                 .build();
     }
 

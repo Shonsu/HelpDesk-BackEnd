@@ -14,4 +14,5 @@ public class TicketFormFieldDto {
     private int order;
     private String controlType;
     private List<TicketFormFieldOptionDto> options;
+    private String type;
 }

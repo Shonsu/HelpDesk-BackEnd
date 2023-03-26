@@ -29,8 +29,9 @@ public class TicketForm {
     @SequenceGenerator(name = "ticket_form_generator", sequenceName = "ticket_form_id_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
+    private String label;
     private Long subCategoryId;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "ticket_form_id")//, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_ticket_form_field_ticket_form_id"))
-    List<TicketFormField> ticketFormFieldList;
+    List<TicketFormField> ticketFormFields;
 }
