@@ -31,7 +31,7 @@ public class TicketForm {
     private Long id;
     private String label;
     private Long subCategoryId;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "ticket_form_id")//, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_ticket_form_field_ticket_form_id"))
     List<TicketFormField> ticketFormFields;
 }

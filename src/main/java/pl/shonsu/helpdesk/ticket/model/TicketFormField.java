@@ -40,7 +40,7 @@ public class TicketFormField {
     private int order;
     @Enumerated(EnumType.STRING)
     private ControlType controlType;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "ticket_form_field_id")
 //, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_ticket_form_field_option_ticket_form_field_id"))
     private List<TicketFormFieldOption> options = new ArrayList<>();

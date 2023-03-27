@@ -31,4 +31,8 @@ class TicketFormService {
     public void deleteTicketForm(Long id) {
         ticketFormRepository.deleteById(id);
     }
+
+    public TicketForm updateTicketForm(TicketForm ticketForm) {
+        return ticketFormRepository.save(ticketForm);
+    }
 }

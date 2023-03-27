@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @ToString
 public class TicketFormFieldDto {
+    private Long id;
     private String key;
     private String label;
     private boolean required;
