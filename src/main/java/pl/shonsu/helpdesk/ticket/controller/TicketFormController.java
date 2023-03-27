@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +24,13 @@ import static pl.shonsu.helpdesk.ticket.controller.mapper.TicketFormMapper.mapTo
 @RequestMapping("/admin/ticketforms")
 @RequiredArgsConstructor
 class TicketFormController {
+    public static final Long EMPTY_ID = null;
     private final TicketFormService ticketFormService;
 
     @PostMapping
     TicketForm createTicketForm(@RequestBody TicketFormDto ticketFormDto) {
         log.info(String.valueOf(ticketFormDto));
-        return ticketFormService.createTicketForm(mapToTicketForm(ticketFormDto));
+        return ticketFormService.createTicketForm(mapToTicketForm(ticketFormDto, EMPTY_ID));
     }
 
     @GetMapping("/{id}")
@@ -39,6 +41,11 @@ class TicketFormController {
     @GetMapping
     List<TicketFormNameDto> getTicketForms() {
         return ticketFormService.getTicketFormsView();
+    }
+
+    @PutMapping("/{id}")
+    TicketForm updateTicketForm(@PathVariable Long id, @RequestBody TicketFormDto ticketFormDto){
+        return ticketFormService.updateTicketForm(mapToTicketForm(ticketFormDto, id));
     }
 
     @DeleteMapping("/{id}")

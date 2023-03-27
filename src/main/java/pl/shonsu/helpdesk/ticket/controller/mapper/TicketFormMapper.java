@@ -11,8 +11,9 @@ import java.util.List;
 
 public class TicketFormMapper {
 
-    public static TicketForm mapToTicketForm(TicketFormDto ticketFormDto) {
+    public static TicketForm mapToTicketForm(TicketFormDto ticketFormDto, Long id) {
         return TicketForm.builder()
+                .id(id)
                 .label(ticketFormDto.getLabel())
                 .subCategoryId(ticketFormDto.getSubCategoryId())
                 .ticketFormFields(mapToFieldList(ticketFormDto))
@@ -26,6 +27,7 @@ public class TicketFormMapper {
 
     private static TicketFormField mapToField(TicketFormFieldDto ticketFormFieldDto) {
         return TicketFormField.builder()
+                .id((ticketFormFieldDto.getId() != null ? ticketFormFieldDto.getId() : null))
                 .key(ticketFormFieldDto.getKey())
                 .label(ticketFormFieldDto.getLabel())
                 .required(ticketFormFieldDto.isRequired())
@@ -39,6 +41,7 @@ public class TicketFormMapper {
     private static List<TicketFormFieldOption> mapToFieldOptions(TicketFormFieldDto ticketFormFieldDto) {
         return ticketFormFieldDto.getOptions().stream()
                 .map(ticketFormFieldOptionDto -> TicketFormFieldOption.builder()
+                        .id(ticketFormFieldDto.getId() != null ? ticketFormFieldDto.getId() : null)
                         .key(ticketFormFieldOptionDto.getKey())
                         .value(ticketFormFieldOptionDto.getValue())
                         .build())
