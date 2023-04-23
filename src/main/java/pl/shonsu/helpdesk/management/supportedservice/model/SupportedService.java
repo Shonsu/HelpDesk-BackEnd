@@ -1,4 +1,4 @@
-package pl.shonsu.helpdesk.management.supportservice.model;
+package pl.shonsu.helpdesk.management.supportedservice.model;
 
 import jakarta.persistence.*;
 import pl.shonsu.helpdesk.management.handlinggroup.model.HandlingGroup;
@@ -20,6 +20,11 @@ public class SupportedService {
     private Set<HandlingGroup> handlingGroups = new HashSet<>();
 
     protected SupportedService() {
+    }
+
+    public SupportedService(Long id, String code) {
+        this.id = id;
+        this.code = code;
     }
 
     public void addHandlingGroup(HandlingGroup handlingGroup) {

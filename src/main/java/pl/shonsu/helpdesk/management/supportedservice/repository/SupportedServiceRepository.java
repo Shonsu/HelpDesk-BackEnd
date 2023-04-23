@@ -1,8 +1,9 @@
-package pl.shonsu.helpdesk.management.supportservice.repository;
+package pl.shonsu.helpdesk.management.supportedservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.shonsu.helpdesk.management.supportservice.model.SupportedService;
+import pl.shonsu.helpdesk.management.supportedservice.model.SupportedService;
 
 
-interface SupportServiceRepository extends JpaRepository<SupportedService,Long> {
+public interface SupportedServiceRepository extends JpaRepository<SupportedService,Long> {
+    boolean existsByCode(String code);
 }

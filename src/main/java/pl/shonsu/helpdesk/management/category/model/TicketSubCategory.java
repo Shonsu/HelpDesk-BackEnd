@@ -12,6 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "ticket_sub_category")
 @Getter
@@ -27,4 +29,5 @@ public class TicketSubCategory {
     private String label;
     private String description;
     private Long ticketCategoryId;
+    //private Long supportedServiceId;
 }

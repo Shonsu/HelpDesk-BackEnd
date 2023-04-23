@@ -9,30 +9,41 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/handlinggroup")
-class HandilngGroupController {
+class HandlingGroupController {
+    public static final Long EMPTY_ID = null;
     private final HandlingGroupService handlingGroupService;
 
-    HandilngGroupController(HandlingGroupService handlingGroupService) {
+    HandlingGroupController(HandlingGroupService handlingGroupService) {
         this.handlingGroupService = handlingGroupService;
     }
 
     @PostMapping
-    public HandlingGroup createHandlingGroup(@RequestBody HandlingGroupDto handlingGroup){
-        return handlingGroupService.createHandlingGroup(new HandlingGroup(handlingGroup.getName()));
+    public HandlingGroupDto createHandlingGroup(@RequestBody HandlingGroupDto handlingGroupDto) {
+        HandlingGroup handlingGroup = handlingGroupService.createHandlingGroup(new HandlingGroup(EMPTY_ID, handlingGroupDto.name()));
+        return new HandlingGroupDto(null, handlingGroup.getName());
     }
 
     @GetMapping
-    public List<HandlingGroup> getHandlingGroups(){
-        return handlingGroupService.getHandlingGroups();
+    public List<HandlingGroupDto> getHandlingGroups() {
+        return handlingGroupService.getHandlingGroups().stream()
+                .map(handlingGroup -> new HandlingGroupDto(handlingGroup.getId(), handlingGroup.getName()))
+                .toList();
     }
 
-    @GetMapping("/{id}")
-    public HandlingGroup getHandlingGroup(@PathVariable Long id){
-        return handlingGroupService.getHandlingGroup(id);
+    @GetMapping("/{handlingGroupId}")
+    public HandlingGroupDto getHandlingGroup(@PathVariable Long handlingGroupId) {
+        HandlingGroup handlingGroup = handlingGroupService.getHandlingGroup(handlingGroupId);
+        return new HandlingGroupDto(handlingGroup.getId(), handlingGroup.getName());
     }
 
-    @DeleteMapping("/id")
-    public void deleteHandlingGroup(@PathVariable Long id){
-        handlingGroupService.deleteHandlingGroup(id);
+    @PutMapping("/{handlingGroupId}")
+    public HandlingGroupDto updateHandlingGroup(@RequestBody HandlingGroupDto handlingGroupDto, @PathVariable Long handlingGroupId) {
+        HandlingGroup handlingGroup = handlingGroupService.updateHandlingGroup(new HandlingGroup(handlingGroupId, handlingGroupDto.name()));
+        return new HandlingGroupDto(handlingGroup.getId(), handlingGroup.getName());
+    }
+
+    @DeleteMapping("/{handlingGroupId}")
+    public void deleteHandlingGroup(@PathVariable Long handlingGroupId) {
+        handlingGroupService.deleteHandlingGroup(handlingGroupId);
     }
 }
