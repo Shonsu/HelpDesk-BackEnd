@@ -1,0 +1,5 @@
+app:
+  security:
+    jwt:
+      expirationTime: 3600000
+      secret: oiuasdfhj8&4567ghjTY%$GH4

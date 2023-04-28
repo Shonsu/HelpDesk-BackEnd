@@ -14,6 +14,8 @@ spring:
   #      ddl-auto: create
   liquibase:
     change-log: classpath:liquibase-chagelog.xml
+  config:
+    import: classpath:application-security.yml
 #logging:
 #  level:
 #    org:
@@ -31,6 +33,9 @@ logging:
         type:
           descriptor:
             sql: trace
+      springframework:
+        security: DEBUG
+
 
 
 
