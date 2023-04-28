@@ -10,6 +10,8 @@ import pl.shonsu.helpdesk.management.ticket.model.TicketFormFieldOption;
 import java.util.List;
 
 public class TicketFormMapper {
+    private TicketFormMapper() {
+    }
 
     public static TicketForm mapToTicketForm(TicketFormDto ticketFormDto, Long id) {
         return TicketForm.builder()

@@ -38,8 +38,8 @@ class SupportedServiceController {
     }
 
     @PutMapping("/{supportedServiceId}")
-    public SupportedServiceDto updateSupportedService(@RequestBody SupportedServiceDto supportedServiceDto, @PathVariable Long SupportedServiceId) {
-        SupportedService supportedService = supportedServiceService.updateSupportedService(new SupportedService(SupportedServiceId, supportedServiceDto.code()));
+    public SupportedServiceDto updateSupportedService(@RequestBody SupportedServiceDto supportedServiceDto, @PathVariable Long supportedServiceId) {
+        SupportedService supportedService = supportedServiceService.updateSupportedService(new SupportedService(supportedServiceId, supportedServiceDto.code()));
         return new SupportedServiceDto(supportedService.getId(), supportedService.getCode());
     }
 

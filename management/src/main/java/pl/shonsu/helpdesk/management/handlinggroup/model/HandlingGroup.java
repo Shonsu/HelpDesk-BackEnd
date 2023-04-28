@@ -16,9 +16,6 @@ public class HandlingGroup {
     private Long id;
 
     private String name;
-
-    //    @OneToMany
-//    private List<User> users;
     @ManyToMany
     @JoinTable(name = "handling_group_supported_service",
             joinColumns = @JoinColumn(name = "handling_group_id"),
