@@ -3,8 +3,8 @@ package pl.shonsu.helpdesk.management.user.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "`user`")
+public class UserManage {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
     @SequenceGenerator(name = "user_generator", sequenceName = "user_id_seq", allocationSize = 1)
@@ -14,7 +14,7 @@ public class User {
     private String email;
 
     private Long handlingGroupId;
-    public User() {
+    public UserManage() {
     }
 
     public Long getId() {

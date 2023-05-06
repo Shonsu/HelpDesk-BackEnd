@@ -57,7 +57,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                         null,
                         userDetails.getAuthorities());
             }
-
         }
         return null;
     }
