@@ -1,6 +1,11 @@
 
 package pl.shonsu.security.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +28,8 @@ import pl.shonsu.security.filters.JwtAuthorizationFilter;
 import pl.shonsu.security.handlers.RestAuthenticationFailureHandler;
 import pl.shonsu.security.handlers.RestAuthenticationSuccessHandler;
 import pl.shonsu.user.service.UserDetailsServiceImpl;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -55,7 +62,7 @@ class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, secret))
                 .exceptionHandling()
@@ -86,4 +93,16 @@ class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public OpenAPI api() {
+        return new OpenAPI()
+                .components(new Components().addSecuritySchemes("JWT Token",
+                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
+                                .in(SecurityScheme.In.HEADER).name("Authorization")))
+                .info(new Info().title("Shop API").version("0"))
+                .addSecurityItem(
+                        new SecurityRequirement().addList("JWT Token", Arrays.asList("read", "write")));
+    }
+
 }
