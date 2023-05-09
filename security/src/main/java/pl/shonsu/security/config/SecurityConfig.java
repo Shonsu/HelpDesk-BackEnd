@@ -1,16 +1,9 @@
 
 package pl.shonsu.security.config;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,25 +15,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import pl.shonsu.security.filters.AuthenticationFilter;
 import pl.shonsu.security.filters.JwtAuthorizationFilter;
 import pl.shonsu.security.handlers.RestAuthenticationFailureHandler;
 import pl.shonsu.security.handlers.RestAuthenticationSuccessHandler;
 import pl.shonsu.user.service.UserDetailsServiceImpl;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableWebSecurity(debug = true)
-@Lazy(true)
 class SecurityConfig {
 
     private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
     private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
     private final AuthenticationConfiguration authenticationConfiguration;
 
-    private String secret;
+    private final String secret;
 
     public SecurityConfig(
             RestAuthenticationSuccessHandler restAuthenticationSuccessHandler,
@@ -60,7 +49,6 @@ class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -70,10 +58,10 @@ class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public HttpSessionSecurityContextRepository securityContextRepository() {
-        return new HttpSessionSecurityContextRepository();
-    }
+//    @Bean
+//    public HttpSessionSecurityContextRepository securityContextRepository() {
+//        return new HttpSessionSecurityContextRepository();
+//    }
 
     @Bean
     public AuthenticationFilter authenticationFilter() throws Exception {
@@ -93,16 +81,4 @@ class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    public OpenAPI api() {
-        return new OpenAPI()
-                .components(new Components().addSecuritySchemes("JWT Token",
-                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
-                                .in(SecurityScheme.In.HEADER).name("Authorization")))
-                .info(new Info().title("Shop API").version("0"))
-                .addSecurityItem(
-                        new SecurityRequirement().addList("JWT Token", Arrays.asList("read", "write")));
-    }
-
 }
