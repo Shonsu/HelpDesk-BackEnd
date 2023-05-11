@@ -4,6 +4,7 @@ package pl.shonsu.helpdesk.management.category.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.shonsu.helpdesk.management.category.controller.dto.TicketCategoryDto;
 import pl.shonsu.helpdesk.management.category.controller.dto.TicketCategoryView;
@@ -22,6 +23,7 @@ class TicketCategoryController {
     private final TicketCategoryService ticketCategoryService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     TicketCategory createTicketCategory(@RequestBody @Valid TicketCategoryDto ticketCategoryDto) {
         return ticketCategoryService.createTicketCategory(mapToTicketCategory(ticketCategoryDto, EMPTY_ID));
     }
@@ -29,19 +31,20 @@ class TicketCategoryController {
     List<TicketCategoryView> getTicketCategories() {
         return ticketCategoryService.getTicketCategories();
     }
-    @GetMapping("/{id}")
-    TicketCategory getTicketCategory(@PathVariable Long id){
-        return ticketCategoryService.getTicketCategory(id);
+    @GetMapping("/{categoryId}")
+    TicketCategory getTicketCategory(@PathVariable Long categoryId){
+        return ticketCategoryService.getTicketCategory(categoryId);
     }
 
-    @PutMapping("/{id}")
-    TicketCategory updateCategory(@PathVariable Long id, @RequestBody @Valid TicketCategoryDto ticketCategoryDto){
-        return ticketCategoryService.updateCategory(mapToTicketCategory(ticketCategoryDto, id));
+    @PutMapping("/{categoryId}")
+    TicketCategory updateCategory(@PathVariable Long categoryId, @RequestBody @Valid TicketCategoryDto ticketCategoryDto){
+        return ticketCategoryService.updateCategory(mapToTicketCategory(ticketCategoryDto, categoryId));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTicketCategory(@PathVariable Long id){
-        ticketCategoryService.deleteTicketCategory(id);
+    @DeleteMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTicketCategory(@PathVariable Long categoryId){
+        ticketCategoryService.deleteTicketCategory(categoryId);
     }
 
     @GetMapping("/search")
@@ -49,9 +52,9 @@ class TicketCategoryController {
         return ticketCategoryService.searchTicketCategories(text);
     }
 
-    private TicketCategory mapToTicketCategory(TicketCategoryDto ticketCategoryDto, Long id) {
+    private TicketCategory mapToTicketCategory(TicketCategoryDto ticketCategoryDto, Long categoryId) {
         return TicketCategory.builder()
-                .id(id)
+                .id(categoryId)
                 .label(ticketCategoryDto.getLabel())
                 .description(ticketCategoryDto.getDescription())
                 .build();

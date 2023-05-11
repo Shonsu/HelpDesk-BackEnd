@@ -32,9 +32,9 @@ class TicketFormController {
         return ticketFormService.createTicketForm(TicketFormMapper.mapToTicketForm(ticketFormDto, EMPTY_ID));
     }
 
-    @GetMapping("/{id}")
-    TicketForm getTicketForm(@PathVariable Long id) {
-        return ticketFormService.getTicketForm(id);
+    @GetMapping("/{ticketFormId}")
+    TicketForm getTicketForm(@PathVariable Long ticketFormId) {
+        return ticketFormService.getTicketForm(ticketFormId);
     }
 
     @GetMapping
@@ -42,13 +42,13 @@ class TicketFormController {
         return ticketFormService.getTicketFormsView();
     }
 
-    @PutMapping("/{id}")
-    TicketForm updateTicketForm(@PathVariable Long id, @RequestBody TicketFormDto ticketFormDto){
-        return ticketFormService.updateTicketForm(TicketFormMapper.mapToTicketForm(ticketFormDto, id));
+    @PutMapping("/{ticketFormId}")
+    TicketForm updateTicketForm(@PathVariable Long ticketFormId, @RequestBody TicketFormDto ticketFormDto){
+        return ticketFormService.updateTicketForm(TicketFormMapper.mapToTicketForm(ticketFormDto, ticketFormId));
     }
 
-    @DeleteMapping("/{id}")
-    void deleteTicketForm(@PathVariable Long id){
-        ticketFormService.deleteTicketForm(id);
+    @DeleteMapping("/{ticketFormId}")
+    void deleteTicketForm(@PathVariable Long ticketFormId){
+        ticketFormService.deleteTicketForm(ticketFormId);
     }
 }

@@ -33,8 +33,10 @@ logging:
         type:
           descriptor:
             sql: trace
-      springframework:
-        security: DEBUG
+springdoc:
+  api-docs:
+    enabled: true
+
 
 
 

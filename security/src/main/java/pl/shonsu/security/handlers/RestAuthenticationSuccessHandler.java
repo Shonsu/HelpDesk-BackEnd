@@ -12,12 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import pl.shonsu.user.model.User;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -43,7 +40,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         UserDetails user = userDetailsService.loadUserByUsername(username);
         String token = JWT.create()
                 .withSubject(username)
-                .withClaim("Roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
+                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(Algorithm.HMAC256(secret));
 

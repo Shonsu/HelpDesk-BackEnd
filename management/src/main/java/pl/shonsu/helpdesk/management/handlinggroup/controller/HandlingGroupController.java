@@ -1,5 +1,6 @@
 package pl.shonsu.helpdesk.management.handlinggroup.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.shonsu.helpdesk.management.handlinggroup.controller.dto.HandlingGroupDto;
 import pl.shonsu.helpdesk.management.handlinggroup.model.HandlingGroup;
@@ -18,6 +19,7 @@ class HandlingGroupController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public HandlingGroupDto createHandlingGroup(@RequestBody HandlingGroupDto handlingGroupDto) {
         HandlingGroup handlingGroup = handlingGroupService.createHandlingGroup(new HandlingGroup(EMPTY_ID, handlingGroupDto.name()));
         return new HandlingGroupDto(null, handlingGroup.getName());
@@ -43,6 +45,7 @@ class HandlingGroupController {
     }
 
     @DeleteMapping("/{handlingGroupId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteHandlingGroup(@PathVariable Long handlingGroupId) {
         handlingGroupService.deleteHandlingGroup(handlingGroupId);
     }

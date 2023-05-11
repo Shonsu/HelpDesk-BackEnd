@@ -2,15 +2,8 @@ package pl.shonsu.helpdesk.management.category.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import pl.shonsu.helpdesk.management.category.controller.dto.TicketSubCategoryDto;
 import pl.shonsu.helpdesk.management.category.controller.dto.TicketSubCategoryView;
 import pl.shonsu.helpdesk.management.category.model.TicketSubCategory;
@@ -27,6 +20,7 @@ class TicketSubCategoryController {
     private final TicketSubCategoryService subCategoryService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     TicketSubCategory createTicketSubCategory(@RequestBody @Valid TicketSubCategoryDto ticketSubCategoryDto) {
         return subCategoryService.createTicketSubCategory(mapToTicketSubCategory(ticketSubCategoryDto, EMPTY_ID));
     }
@@ -36,19 +30,20 @@ class TicketSubCategoryController {
         return subCategoryService.getTicketSubCategories();
     }
 
-    @GetMapping("/{id}")
-    TicketSubCategory getTicketSubCategory(@PathVariable Long id) {
-        return subCategoryService.getTicketSubCategory(id);
+    @GetMapping("/{subCategoryId}")
+    TicketSubCategory getTicketSubCategory(@PathVariable Long subCategoryId) {
+        return subCategoryService.getTicketSubCategory(subCategoryId);
     }
 
-    @PutMapping("/{id}")
-    TicketSubCategory updateTicketSubCategory(@PathVariable Long id, @RequestBody @Valid TicketSubCategoryDto ticketSubCategoryDto) {
-        return subCategoryService.updateTicketSubCategory(mapToTicketSubCategory(ticketSubCategoryDto, id));
+    @PutMapping("/{subCategoryId}")
+    TicketSubCategory updateTicketSubCategory(@PathVariable Long subCategoryId, @RequestBody @Valid TicketSubCategoryDto ticketSubCategoryDto) {
+        return subCategoryService.updateTicketSubCategory(mapToTicketSubCategory(ticketSubCategoryDto, subCategoryId));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTicketSubCategory(@PathVariable Long id) {
-        subCategoryService.deleteTicketSubCategory(id);
+    @DeleteMapping("/{subCategoryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTicketSubCategory(@PathVariable Long subCategoryId) {
+        subCategoryService.deleteTicketSubCategory(subCategoryId);
     }
 
     @GetMapping("/search")
@@ -56,9 +51,9 @@ class TicketSubCategoryController {
         return subCategoryService.searchTicketSubCategories(text);
     }
 
-    private TicketSubCategory mapToTicketSubCategory(TicketSubCategoryDto ticketSubCategoryDto, Long id) {
+    private TicketSubCategory mapToTicketSubCategory(TicketSubCategoryDto ticketSubCategoryDto, Long subCategoryId) {
         return TicketSubCategory.builder()
-                .id(id)
+                .id(subCategoryId)
                 .label(ticketSubCategoryDto.getLabel())
                 .description(ticketSubCategoryDto.getDescription())
                 .ticketCategoryId(ticketSubCategoryDto.getTicketCategoryId())

@@ -31,6 +31,7 @@ class TicketCategoryService {
     }
 
     public void deleteTicketCategory(Long id) {
+        //TODO check if subdirectiories exists
         ticketCategoryRepository.deleteById(id);
     }
 

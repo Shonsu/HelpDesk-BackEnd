@@ -1,5 +1,6 @@
 package pl.shonsu.helpdesk.management.supportedservice.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.shonsu.helpdesk.management.supportedservice.controller.dto.SupportedServiceDto;
 import pl.shonsu.helpdesk.management.supportedservice.model.SupportedService;
@@ -18,6 +19,7 @@ class SupportedServiceController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     SupportedServiceDto createSupportedService(@RequestBody SupportedServiceDto supportedServiceDto) {
         SupportedService supportedService = supportedServiceService.createSupportedService(new SupportedService(EMPTY_ID, supportedServiceDto.code()));
         return new SupportedServiceDto(supportedService.getId(), supportedService.getCode());
@@ -44,6 +46,7 @@ class SupportedServiceController {
     }
 
     @DeleteMapping("/{supportedServiceId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteHandlingGroup(@PathVariable Long supportedServiceId) {
         supportedServiceService.deleteSupportedService(supportedServiceId);
     }
