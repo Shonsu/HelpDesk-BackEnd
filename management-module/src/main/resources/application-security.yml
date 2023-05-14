@@ -1,0 +1,11 @@
+app:
+  security:
+    jwt:
+      expirationTime: 36000000
+      secret: oiuasdfhj8&4567ghjTY%$GH4
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+

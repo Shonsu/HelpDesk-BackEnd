@@ -15,8 +15,9 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>management</module>
-        <module>security</module>
+        <module>management-module</module>
+        <module>security-module</module>
+        <module>user-helpdesk-module</module>
     </modules>
 
     <properties>
