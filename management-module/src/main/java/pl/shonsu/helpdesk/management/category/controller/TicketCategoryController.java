@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 class TicketCategoryController {
 
-    public static final Long EMPTY_ID = null;
+    private static final Long EMPTY_ID = null;
     private final TicketCategoryService ticketCategoryService;
 
     @PostMapping

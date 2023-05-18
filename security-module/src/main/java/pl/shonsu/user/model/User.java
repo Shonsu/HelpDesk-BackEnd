@@ -25,6 +25,7 @@ public class User implements Serializable {
     private Authorities authorities;
 
     public User() {
+        // for Hibernate
     }
 
     public Long getId() {

@@ -2,24 +2,33 @@ package pl.shonsu.userhelpdesk.ticket.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity(name = "ticket")
-class Ticket {
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_generator")
     @SequenceGenerator(name = "ticket_generator", sequenceName = "ticket_id_seq", allocationSize = 1)
     private Long id;
 
-    private Long userCreatorId;
-    private LocalDateTime createDate;
-    private LocalDateTime expiryDate;
+    private Long creatorId;
+    private Long operatorId;
+    private Instant createDate;
+    private Instant expiryDate;
 
-    @JdbcTypeCode((SqlTypes.JSON))
+    @JdbcTypeCode(SqlTypes.JSON)
     private Content content;
 
     @Enumerated(EnumType.STRING)
@@ -29,27 +38,4 @@ class Ticket {
     //TODO ticket history
     //TODO communication history
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getUserCreatorId() {
-        return userCreatorId;
-    }
-
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public LocalDateTime getExpiryDate() {
-        return expiryDate;
-    }
-
-    public Content getContent() {
-        return content;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
 }

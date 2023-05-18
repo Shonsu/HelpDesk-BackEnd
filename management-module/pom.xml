@@ -17,6 +17,11 @@
             <artifactId>security-module</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>pl.shonsu.userhelpdesk</groupId>
+            <artifactId>user-helpdesk-module</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

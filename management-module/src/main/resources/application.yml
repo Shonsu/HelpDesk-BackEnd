@@ -7,6 +7,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+#        jdbc:
+#          time_zone: UTC
+#        timezone:
+#          default_storage: NORMALIZE
   #        use_sql_comments: true
   #        format_sql: true
   #      show-sql: true
@@ -33,7 +37,7 @@ logging:
         type:
           descriptor:
             sql: trace
-springdoc:
+spring-doc:
   api-docs:
     enabled: true
 

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories("pl.shonsu")
 @EntityScan("pl.shonsu")
-@SpringBootApplication(scanBasePackages = {"pl.shonsu.security","pl.shonsu.user", "pl.shonsu.helpdesk"})
+@SpringBootApplication(scanBasePackages = {"pl.shonsu.security","pl.shonsu.user", "pl.shonsu.helpdesk", "pl.shonsu.userhelpdesk"})
 public class HelpDeskApplication {
     public static void main(String[] args) {
         SpringApplication.run(HelpDeskApplication.class, args);
