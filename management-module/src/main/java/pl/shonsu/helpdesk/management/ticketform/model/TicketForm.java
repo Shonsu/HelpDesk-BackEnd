@@ -34,6 +34,6 @@ public class TicketForm {
     private Long subCategoryId;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "ticket_form_id")
-    List<TicketFormField> ticketFormFields;
+    private List<TicketFormField> ticketFormFields;
 
 }
