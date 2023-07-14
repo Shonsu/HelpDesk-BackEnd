@@ -1,16 +1,14 @@
 package pl.shonsu.userhelpdesk.ticket.domain.service;
 
-import org.springframework.stereotype.Component;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
 import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketCommand;
 import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketUseCase;
 import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
 
-@Component
-class RegisterTicketService implements RegisterTicketUseCase {
+public class RegisterTicketService implements RegisterTicketUseCase {
     private final CreateTicketPort createTicketPort;
 
-    RegisterTicketService(CreateTicketPort createTicketPort) {
+    public RegisterTicketService(CreateTicketPort createTicketPort) {
         this.createTicketPort = createTicketPort;
     }
 

@@ -1,6 +1,5 @@
 package pl.shonsu.userhelpdesk.ticket.domain.adapter.out.persistance;
 
-import org.springframework.stereotype.Component;
 import pl.shonsu.userhelpdesk.ticket.domain.adapter.out.persistance.entity.ActionEntity;
 import pl.shonsu.userhelpdesk.ticket.domain.adapter.out.persistance.entity.ContentEntity;
 import pl.shonsu.userhelpdesk.ticket.domain.adapter.out.persistance.entity.Status;
@@ -13,11 +12,10 @@ import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-class TicketPersistenceAdapter implements CreateTicketPort {
+public class TicketPersistenceAdapter implements CreateTicketPort {
     private final TicketEntityRepository ticketEntityRepository;
 
-    TicketPersistenceAdapter(TicketEntityRepository ticketEntityRepository) {
+    public TicketPersistenceAdapter(TicketEntityRepository ticketEntityRepository) {
         this.ticketEntityRepository = ticketEntityRepository;
     }
 
