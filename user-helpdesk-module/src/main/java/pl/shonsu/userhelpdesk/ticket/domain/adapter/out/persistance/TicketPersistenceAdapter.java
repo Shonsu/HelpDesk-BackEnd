@@ -9,7 +9,6 @@ import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Action;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
 import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TicketPersistenceAdapter implements CreateTicketPort {
@@ -27,8 +26,10 @@ public class TicketPersistenceAdapter implements CreateTicketPort {
 
     private static TicketEntity mapToTicketEntity(Ticket ticket) {
 
-        List<ActionEntity> actionsEntity = new ArrayList<>();
-        ticket.getActionHistory().getActions().forEach(TicketPersistenceAdapter::mapToActionEntity);
+        List<ActionEntity> actionsEntity = ticket.getActionHistory()
+                .getActions()
+                .stream()
+                .map(TicketPersistenceAdapter::mapToActionEntity).toList();
 
         ContentEntity contentEntity = new ContentEntity(
                 ticket.getContent().ticketFormId(),
@@ -47,10 +48,11 @@ public class TicketPersistenceAdapter implements CreateTicketPort {
     }
 
     private static ActionEntity mapToActionEntity(Action action) {
-        return new ActionEntity(
-                action.actionId() == null ? null : action.actionId().id(),
+        return ActionEntity.withoutId(
+                action.who().id(),
                 Status.valueOf(action.what().name()),
                 action.description(),
-                action.timestamp());
+                action.timestamp(),
+                null);
     }
 }

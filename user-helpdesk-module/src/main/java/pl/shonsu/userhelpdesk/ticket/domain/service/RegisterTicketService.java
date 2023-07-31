@@ -19,6 +19,6 @@ public class RegisterTicketService implements RegisterTicketUseCase {
                 registerTicketCommand.content()
         );
         createTicketPort.createTicket(ticket);
-        return false;
+        return true;
     }
 }

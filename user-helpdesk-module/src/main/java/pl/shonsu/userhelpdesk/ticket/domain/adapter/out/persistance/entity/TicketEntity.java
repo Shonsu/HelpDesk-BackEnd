@@ -27,18 +27,18 @@ public class TicketEntity {
 
     private Long creatorId;
     private Instant createDate;
-    private Instant expiryDate; //TODO add column to database table
+    private Instant expiryDate;
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "content")
     private ContentEntity contentEntity;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "ticket_id")
     private List<ActionEntity> actions;
     //TODO attachments names
-    //TODO ticket history
-    //TODO communication history
 
 }
