@@ -1,4 +1,4 @@
-package pl.shonsu.userhelpdesk.ticket.domain.adapter.in.web;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.application.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
