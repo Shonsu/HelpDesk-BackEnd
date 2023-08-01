@@ -1,4 +1,4 @@
-package pl.shonsu.userhelpdesk.ticket.model;
+package pl.shonsu.userhelpdesk.ticket.domain.adapter.out.persistance.entity;
 
 
 import jakarta.persistence.*;
@@ -10,13 +10,15 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity(name = "ticket")
+@Table(name = "ticket")
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ticket {
+public class TicketEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_generator")
@@ -24,18 +26,19 @@ public class Ticket {
     private Long id;
 
     private Long creatorId;
-    private Long operatorId;
     private Instant createDate;
     private Instant expiryDate;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private Content content;
+    @Column(name = "content")
+    private ContentEntity contentEntity;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "ticket_id")
+    private List<ActionEntity> actions;
     //TODO attachments names
-    //TODO ticket history
-    //TODO communication history
 
 }

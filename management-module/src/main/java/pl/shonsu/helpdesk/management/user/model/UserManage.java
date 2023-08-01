@@ -12,9 +12,10 @@ public class UserManage {
     private String firstName;
     private String lastName;
     private String email;
-
     private Long handlingGroupId;
+
     public UserManage() {
+        // for hibernate
     }
 
     public Long getId() {

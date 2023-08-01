@@ -9,7 +9,7 @@ import lombok.Getter;
 public class HelpdeskUser {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name = "user_generator", sequenceName = "user_id_sec", allocationSize = 1)
+   // @SequenceGenerator(name = "user_generator", sequenceName = "user_id_sec", allocationSize = 1)
     private Long id;
     String username;
 }

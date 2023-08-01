@@ -1,13 +1,13 @@
-package pl.shonsu.userhelpdesk.ticket.controller;
+package pl.shonsu.userhelpdesk.ticketold.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.shonsu.userhelpdesk.ticket.controller.dto.TicketDtoRequest;
-import pl.shonsu.userhelpdesk.ticket.controller.dto.TicketDtoResponse;
-import pl.shonsu.userhelpdesk.ticket.service.TicketService;
+import pl.shonsu.userhelpdesk.ticketold.controller.dto.TicketDtoRequest;
+import pl.shonsu.userhelpdesk.ticketold.controller.dto.TicketDtoResponse;
+import pl.shonsu.userhelpdesk.ticketold.service.TicketService;
 
 @RestController
 @RequestMapping("/helpdesk/tickets")
