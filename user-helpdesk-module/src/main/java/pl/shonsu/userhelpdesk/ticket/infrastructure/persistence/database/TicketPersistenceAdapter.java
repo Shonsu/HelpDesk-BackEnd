@@ -32,7 +32,7 @@ public class TicketPersistenceAdapter implements CreateTicketPort {
                 .map(TicketPersistenceAdapter::mapToActionEntity).toList();
 
         ContentEntity contentEntity = new ContentEntity(
-                ticket.getContent().ticketFormId(),
+                ticket.getContent().id().id(),
                 ticket.getContent().properties()
         );
 

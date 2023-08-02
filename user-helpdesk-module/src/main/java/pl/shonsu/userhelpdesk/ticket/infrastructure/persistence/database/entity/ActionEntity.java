@@ -18,6 +18,8 @@ public class ActionEntity {
     private Status what;
     private String description;
     private Instant timestamp;
+
+    //TODO check do i need it
     @Column(name = "ticket_id")
     private Long ticketEntityId;
 

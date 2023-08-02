@@ -24,7 +24,6 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class TicketFormField {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_form_field_generator")
