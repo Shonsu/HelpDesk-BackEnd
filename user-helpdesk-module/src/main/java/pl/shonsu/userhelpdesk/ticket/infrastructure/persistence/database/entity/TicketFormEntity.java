@@ -9,9 +9,9 @@ import java.util.List;
 
 @Entity(name = "ticket_form")
 @Table(name = "ticket_form")
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class TicketFormEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_from_generator")

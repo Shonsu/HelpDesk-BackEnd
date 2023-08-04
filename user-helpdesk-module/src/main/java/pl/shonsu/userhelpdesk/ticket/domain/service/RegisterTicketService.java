@@ -22,7 +22,7 @@ public class RegisterTicketService implements RegisterTicketUseCase {
                 registerTicketCommand.content()
         );
         ticketContentVerfifier.isTicketContentValid(ticket.getContent());
-        //createTicketPort.createTicket(ticket);
+        createTicketPort.createTicket(ticket);
         return true;
     }
 }

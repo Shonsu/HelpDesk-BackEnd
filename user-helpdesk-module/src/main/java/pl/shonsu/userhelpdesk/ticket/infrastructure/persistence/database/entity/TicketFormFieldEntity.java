@@ -2,6 +2,7 @@ package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 @Entity(name = "ticket_form_field")
 @AllArgsConstructor
 @NoArgsConstructor
-class TicketFormFieldEntity {
+@Getter
+public class TicketFormFieldEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_form_field_generator")
