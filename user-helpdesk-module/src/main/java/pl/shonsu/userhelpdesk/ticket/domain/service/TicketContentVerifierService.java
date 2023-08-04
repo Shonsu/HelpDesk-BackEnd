@@ -2,8 +2,12 @@ package pl.shonsu.userhelpdesk.ticket.domain.service;
 
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Content;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketForm;
+import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormField;
 import pl.shonsu.userhelpdesk.ticket.domain.port.in.TicketContentVerfifier;
 import pl.shonsu.userhelpdesk.ticket.domain.port.out.LoadTicketFormPort;
+
+import java.util.List;
+import java.util.Map;
 
 public class TicketContentVerifierService implements TicketContentVerfifier {
 
@@ -18,12 +22,23 @@ public class TicketContentVerifierService implements TicketContentVerfifier {
         TicketForm ticketForm = loadTicketFormPort.loadTicketForm(content.id());
         boolean valid = ticketForm.ticketFormFields().stream()
                 .allMatch(ticketFormField ->
-                        (content.properties().containsKey(ticketFormField.key()) && ticketFormField.ticketFormFieldOption().isEmpty())
-                                || (!ticketFormField.ticketFormFieldOption().isEmpty() && (ticketFormField.ticketFormFieldOption().stream()
-                                .anyMatch(fieldOptionValue -> content.properties().get(ticketFormField.key()).equals(fieldOptionValue)))));
+                        isEmpty(ticketFormField.ticketFormFieldOption()) ? isPropertiesContainsKey(content.properties(), ticketFormField.key()) : ifPropertiesContainsProperValueForTicketFormFieldKey(content.properties(), ticketFormField));
         if (ticketForm.ticketFormFields().size() != content.properties().size() || !valid) {
             throw new IllegalArgumentException("Invalid ticket structure");
         }
+    }
+
+    private static boolean isEmpty(List<String> ticketFormFieldOption) {
+        return ticketFormFieldOption.isEmpty();
+    }
+
+    private static boolean isPropertiesContainsKey(Map<String, String> properties, String key) {
+        return properties.containsKey(key);
+    }
+
+    private static boolean ifPropertiesContainsProperValueForTicketFormFieldKey(Map<String, String> properties, TicketFormField ticketFormField) {
+        return ticketFormField.ticketFormFieldOption().stream()
+                .anyMatch(fieldOptionValue -> properties.get(ticketFormField.key()).equals(fieldOptionValue));
 
     }
 }
