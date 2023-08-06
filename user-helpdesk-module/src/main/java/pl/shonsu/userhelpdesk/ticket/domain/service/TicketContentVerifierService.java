@@ -22,7 +22,7 @@ public class TicketContentVerifierService implements TicketContentVerfifier {
         TicketForm ticketForm = loadTicketFormPort.loadTicketForm(content.id());
         boolean valid = ticketForm.ticketFormFields().stream()
                 .allMatch(ticketFormField ->
-                        isEmpty(ticketFormField.ticketFormFieldOption()) ? isPropertiesContainsKey(content.properties(), ticketFormField.key()) : ifPropertiesContainsProperValueForTicketFormFieldKey(content.properties(), ticketFormField));
+                        isEmpty(ticketFormField.ticketFormFieldOption()) ? isPropertiesContainsKey(content.properties(), ticketFormField.key()) : hasProperValueForTicketFormField(content.properties(), ticketFormField));
         if (ticketForm.ticketFormFields().size() != content.properties().size() || !valid) {
             throw new IllegalArgumentException("Invalid ticket structure");
         }
@@ -36,7 +36,7 @@ public class TicketContentVerifierService implements TicketContentVerfifier {
         return properties.containsKey(key);
     }
 
-    private static boolean ifPropertiesContainsProperValueForTicketFormFieldKey(Map<String, String> properties, TicketFormField ticketFormField) {
+    private static boolean hasProperValueForTicketFormField(Map<String, String> properties, TicketFormField ticketFormField) {
         return ticketFormField.ticketFormFieldOption().stream()
                 .anyMatch(fieldOptionValue -> properties.get(ticketFormField.key()).equals(fieldOptionValue));
 
