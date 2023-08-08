@@ -24,7 +24,7 @@ public class TicketFormPersistenceAdapter implements LoadTicketFormPort {
     @Override
     public TicketForm loadTicketForm(TicketFormId id) {
         TicketFormEntity ticketFormEntity = ticketFormEntityRepository.findById(id.id())
-                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Not found TickeForm with id: {0}} ", id.id())));
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Not found TickeForm with id: {0}", id.id())));
 
         return new TicketForm(
                 new TicketFormId(ticketFormEntity.getId()),

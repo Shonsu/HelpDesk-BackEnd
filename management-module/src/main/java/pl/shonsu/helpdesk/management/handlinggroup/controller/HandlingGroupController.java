@@ -9,7 +9,7 @@ import pl.shonsu.helpdesk.management.handlinggroup.service.HandlingGroupService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/handlinggroup")
+@RequestMapping("/admin/handlinggroup")
 class HandlingGroupController {
     public static final Long EMPTY_ID = null;
     private final HandlingGroupService handlingGroupService;

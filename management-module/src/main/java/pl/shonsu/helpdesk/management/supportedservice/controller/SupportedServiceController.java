@@ -9,7 +9,7 @@ import pl.shonsu.helpdesk.management.supportedservice.service.SupportedServiceSe
 import java.util.List;
 
 @RestController
-@RequestMapping("/supportedservice")
+@RequestMapping("/admin/supportedservice")
 class SupportedServiceController {
     public static final Long EMPTY_ID = null;
     private final SupportedServiceService supportedServiceService;

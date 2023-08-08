@@ -11,12 +11,14 @@ import java.util.List;
 @Builder
 public class CustomUserDetails implements UserDetails {
 
+    private Long id;
     private String username;
     private String password;
     private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String username, String password, boolean enabled, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(Long id, String username, String password, boolean enabled, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -29,6 +31,7 @@ public class CustomUserDetails implements UserDetails {
                 .toList();
 
         return new CustomUserDetails(
+                user.getId(),
                 user.getUsername(),
                 user.getPassword(),
                 user.isEnabled(),
@@ -36,6 +39,9 @@ public class CustomUserDetails implements UserDetails {
         );
     }
 
+    public Long getId(){
+        return id;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

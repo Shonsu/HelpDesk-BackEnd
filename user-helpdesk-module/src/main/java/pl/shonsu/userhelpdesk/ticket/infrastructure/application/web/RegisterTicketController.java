@@ -1,14 +1,17 @@
 package pl.shonsu.userhelpdesk.ticket.infrastructure.application.web;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import pl.shonsu.userhelpdesk.ticket.domain.model.creator.CreatorId;
+import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Content;
+import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
 import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketCommand;
 import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketUseCase;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.web.dto.ContentResource;
 
 @RestController
+@RequestMapping("/user")
 class RegisterTicketController {
     private final RegisterTicketUseCase registerTicketUseCase;
 
@@ -18,7 +21,10 @@ class RegisterTicketController {
 
     @PostMapping("/ticket/register")
     @ResponseStatus(HttpStatus.CREATED)
-    void registerTicket(@RequestBody RegisterTicketCommand command){
-        registerTicketUseCase.registerTicket(command);
+    void registerTicket(@RequestBody ContentResource contentResource, @AuthenticationPrincipal Long userId) {
+        RegisterTicketCommand rtc = new RegisterTicketCommand(CreatorId.of(userId),
+                new Content(TicketFormId.of(contentResource.ticketFormId()),
+                        contentResource.content()));
+        registerTicketUseCase.registerTicket(rtc);
     }
 }
