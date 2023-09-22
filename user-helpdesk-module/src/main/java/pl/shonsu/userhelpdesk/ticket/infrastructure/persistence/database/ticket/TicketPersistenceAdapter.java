@@ -1,10 +1,10 @@
-package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket;
 
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity.ActionEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity.ContentEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity.Status;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity.TicketEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.repository.TicketEntityRepository;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.ActionEntity;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.ContentEntity;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.Status;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.TicketEntity;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.repository.TicketEntityRepository;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Action;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
 import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;

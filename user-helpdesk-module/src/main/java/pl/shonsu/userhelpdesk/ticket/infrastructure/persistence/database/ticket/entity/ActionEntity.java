@@ -1,4 +1,4 @@
-package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity;
 
 import jakarta.persistence.*;
 

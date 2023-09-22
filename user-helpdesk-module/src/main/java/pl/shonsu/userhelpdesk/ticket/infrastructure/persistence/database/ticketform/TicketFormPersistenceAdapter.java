@@ -1,14 +1,14 @@
-package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform;
 
 import jakarta.persistence.EntityNotFoundException;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketForm;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormField;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
 import pl.shonsu.userhelpdesk.ticket.domain.port.out.LoadTicketFormPort;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity.TicketFormEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity.TicketFormFieldEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity.TicketFormFieldOptionEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.repository.TicketFormEntityRepository;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.entity.TicketFormEntity;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.entity.TicketFormFieldEntity;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.entity.TicketFormFieldOptionEntity;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.repository.TicketFormEntityRepository;
 
 import java.text.MessageFormat;
 import java.util.List;

@@ -10,6 +10,9 @@ import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
 import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketCommand;
 import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketUseCase;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.web.dto.ContentResource;
+import pl.shonsu.userhelpdesk.ticket.domain.port.in.TicketViewResponse;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -20,7 +23,7 @@ class RegisterTicketController {
         this.registerTicketUseCase = registerTicketUseCase;
     }
 
-    @PostMapping("/ticket/register")
+    @PostMapping("/tickets/register")
     @ResponseStatus(HttpStatus.CREATED)
     void registerTicket(@Valid @RequestBody ContentResource contentResource, @AuthenticationPrincipal Long userId) {
         RegisterTicketCommand registerTicketCommand = new RegisterTicketCommand(
@@ -29,5 +32,10 @@ class RegisterTicketController {
                         TicketFormId.of(contentResource.ticketFormId()),
                         contentResource.content()));
         registerTicketUseCase.registerTicket(registerTicketCommand);
+    }
+
+    @GetMapping("/tickets")
+    List<TicketViewResponse> listTickets(@AuthenticationPrincipal Long userId){
+        return null;
     }
 }

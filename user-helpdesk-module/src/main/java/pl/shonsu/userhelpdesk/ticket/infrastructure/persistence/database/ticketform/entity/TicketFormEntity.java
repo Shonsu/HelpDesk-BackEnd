@@ -1,25 +1,28 @@
-package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.entity;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
-@Entity(name = "ticket_form")
+@Entity
 @Table(name = "ticket_form")
+@NamedEntityGraph()
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class TicketFormEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_from_generator")
-    //@SequenceGenerator(name = "ticket_form_generator", sequenceName = "ticket_form_id_sec", allocationSize = 1)
     private Long id;
 
     @OneToMany
     @JoinColumn(name = "ticket_form_id")
+    @Fetch(FetchMode.SUBSELECT)
     private List<TicketFormFieldEntity> ticketFormFieldEntities;
 
 }
