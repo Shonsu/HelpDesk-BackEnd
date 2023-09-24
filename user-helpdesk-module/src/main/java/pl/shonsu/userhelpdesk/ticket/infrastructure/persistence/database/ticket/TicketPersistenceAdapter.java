@@ -1,17 +1,18 @@
 package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket;
 
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.ActionEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.ContentEntity;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.Status;
+import jakarta.persistence.EntityNotFoundException;
+import pl.shonsu.userhelpdesk.ticket.domain.model.creator.CreatorId;
+import pl.shonsu.userhelpdesk.ticket.domain.model.operator.OperatorId;
+import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.*;
+import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
+import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
+import pl.shonsu.userhelpdesk.ticket.domain.port.out.LoadTicketPort;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.TicketEntity;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.repository.TicketEntityRepository;
-import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Action;
-import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
-import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
 
-import java.util.List;
+import static pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.TicketMapper.mapToTicketEntity;
 
-public class TicketPersistenceAdapter implements CreateTicketPort {
+public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPort {
     private final TicketEntityRepository ticketEntityRepository;
 
     public TicketPersistenceAdapter(TicketEntityRepository ticketEntityRepository) {
@@ -24,35 +25,20 @@ public class TicketPersistenceAdapter implements CreateTicketPort {
         ticketEntityRepository.save(ticketEntity);
     }
 
-    private static TicketEntity mapToTicketEntity(Ticket ticket) {
-
-        List<ActionEntity> actionsEntity = ticket.getActionHistory()
-                .getActions()
-                .stream()
-                .map(TicketPersistenceAdapter::mapToActionEntity).toList();
-
-        ContentEntity contentEntity = new ContentEntity(
-                ticket.getContent().id().id(),
-                ticket.getContent().properties()
-        );
-
-        return new TicketEntity(
-                ticket.getTicketId() == null ? null : ticket.getTicketId().id(),
-                ticket.getCreatorId().id(),
-                ticket.getCreateAt().time(),
-                ticket.getExpiryAt().time(),
-                contentEntity,
-                Status.valueOf(ticket.getCurrentStatus().name()),
-                actionsEntity
+    public TicketSnapshot loadTicket(TicketId ticketId) {
+        TicketEntity ticket = ticketEntityRepository.findById(ticketId.id()).orElseThrow(
+                () -> new EntityNotFoundException("Ticket [%s]not found.".formatted(ticketId.id())));
+        return new TicketSnapshot(
+                TicketId.of(ticket.getId()),
+                CreatorId.of(ticket.getCreatorId()),
+                OperatorId.of(ticket.getOperatorId()),
+                CreatedAt.of(ticket.getCreateDate()),
+                OpenedAt.of(ticket.getOpenDate()),
+                TerminatedAt.of(ticket.getTerminateDate()),
+                ExpiryAt.of(ticket.getExpiryDate()),
+                new Content(TicketFormId.of(ticket.getContentEntity().getTicketFormId()), ticket.getContentEntity().getProperties()),
+                TicketSnapshot.Status.valueOf(ticket.getStatus().name())
         );
     }
 
-    private static ActionEntity mapToActionEntity(Action action) {
-        return ActionEntity.withoutId(
-                action.who().id(),
-                Status.valueOf(action.what().name()),
-                action.description(),
-                action.timestamp(),
-                null);
-    }
 }

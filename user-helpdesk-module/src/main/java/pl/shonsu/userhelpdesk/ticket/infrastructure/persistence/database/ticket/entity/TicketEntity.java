@@ -26,7 +26,10 @@ public class TicketEntity {
     private Long id;
 
     private Long creatorId;
+    private Long operatorId;
     private Instant createDate;
+    private Instant openDate;
+    private Instant terminateDate;
     private Instant expiryDate;
 
     @JdbcTypeCode(SqlTypes.JSON)
@@ -39,6 +42,9 @@ public class TicketEntity {
     @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JoinColumn(name = "ticket_id")
     private List<ActionEntity> actions;
+
+
+
     //TODO attachments names
 
 }
