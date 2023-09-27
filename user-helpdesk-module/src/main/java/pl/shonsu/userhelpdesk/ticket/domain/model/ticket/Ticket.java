@@ -3,30 +3,27 @@ package pl.shonsu.userhelpdesk.ticket.domain.model.ticket;
 import lombok.Getter;
 import pl.shonsu.userhelpdesk.ticket.domain.model.creator.CreatorId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.operator.OperatorId;
-import pl.shonsu.userhelpdesk.ticket.domain.model.user.UserId;
 
 import java.time.Instant;
 import java.time.Period;
-import java.util.List;
 
 @Getter
-public class Ticket {
-    private TicketId ticketId;
-    private OperatorId operatorId;
-    private CreatorId creatorId;
-    private CreatedAt createAt;
-    private OpenedAt openedAt;
-    private TerminatedAt terminatedAt;
-    private ExpiryAt expiryAt;
-    private Content content;
-    private Status currentStatus;
-    private ActionHistory actionHistory;
+public abstract sealed class Ticket permits NewTicket, CanceledTicket, OpenedTicket, RejectedTicket, ClosedTicket {
 
-    private Ticket(TicketId ticketId, OperatorId operatorId,
-                   CreatorId creatorId, CreatedAt createAt,
-                   OpenedAt openedAt, TerminatedAt terminatedAt,
-                   ExpiryAt expiryAt, Content content, Status currentStatus,
-                   ActionHistory actionHistory) {
+    protected final TicketId ticketId;
+    protected final OperatorId operatorId;
+    protected final CreatorId creatorId;
+    protected final CreatedAt createAt;
+    protected final OpenedAt openedAt;
+    protected final TerminatedAt terminatedAt;
+    protected final ExpiryAt expiryAt;
+    protected final Content content;
+
+    protected final Status status;
+
+    protected final ActionHistory actionHistory;
+
+    private Ticket(TicketId ticketId, OperatorId operatorId, CreatorId creatorId, CreatedAt createAt, OpenedAt openedAt, TerminatedAt terminatedAt, ExpiryAt expiryAt, Content content, Status status, ActionHistory actionHistory) {
         this.ticketId = ticketId;
         this.operatorId = operatorId;
         this.creatorId = creatorId;
@@ -35,86 +32,106 @@ public class Ticket {
         this.terminatedAt = terminatedAt;
         this.expiryAt = expiryAt;
         this.content = content;
-        this.currentStatus = currentStatus;
+        this.status = status;
         this.actionHistory = actionHistory;
     }
 
-    public static Ticket create(CreatorId creatorId,
-                                Content content) {
-        Instant createdAt = Instant.now();
-        Action create = new Action(UserId.of(creatorId.id()), Status.NEW, createdAt);
-        return new Ticket(
+    Ticket(CreatorId creatorId, Content content, Status status, ActionHistory actionHistory) {
+        this(
                 null,
                 null,
                 creatorId,
-                CreatedAt.of(createdAt),
+                CreatedAt.of(Instant.now()),
                 null,
                 null,
-                ExpiryAt.of(createdAt.plus(Period.ofDays(3))),
+                null,
                 content,
-                Status.NEW,
-                new ActionHistory(List.of(create))
+                status,
+                actionHistory);
+    }
+
+    Ticket(NewTicket ticket, OperatorId operatorId, Status status) {
+        this(
+                ticket.ticketId,
+                operatorId,
+                ticket.creatorId,
+                ticket.createAt,
+                ticket.openedAt,
+                null,
+                ExpiryAt.of(Instant.now().plus(Period.ofDays(3))),
+                ticket.content,
+                status,
+                ticket.actionHistory);
+    }
+
+    Ticket(OpenedTicket ticket, OperatorId operatorId, Status status) {
+        this(
+                ticket.ticketId,
+                operatorId,
+                ticket.creatorId,
+                ticket.createAt,
+                ticket.openedAt,
+                TerminatedAt.of(Instant.now()),
+                ticket.expiryAt,
+                ticket.content,
+                status,
+                ticket.actionHistory);
+    }
+
+    Ticket(OpenedTicket ticket, Status status) {
+        this(
+                ticket.ticketId,
+                ticket.operatorId,
+                ticket.creatorId,
+                ticket.createAt,
+                ticket.openedAt,
+                TerminatedAt.of(Instant.now()),
+                ticket.expiryAt,
+                ticket.content,
+                status,
+                ticket.actionHistory);
+    }
+
+    public Ticket(TicketSnapshot ticketSnapshot) {
+        this(
+                ticketSnapshot.ticketId(),
+                ticketSnapshot.operatorId(),
+                ticketSnapshot.creatorId(),
+                ticketSnapshot.createAt(),
+                ticketSnapshot.openedAt(),
+                ticketSnapshot.terminatedAt(),
+                ticketSnapshot.expiryAt(),
+                ticketSnapshot.content(),
+                Status.valueOf(ticketSnapshot.status().name()),
+                ticketSnapshot.actionHistory());
+    }
+
+    public static Ticket create(CreatorId creatorId, Content content) {
+        return new NewTicket(creatorId, content);
+    }
+
+    public static Ticket from(TicketSnapshot ticketSnapshot) {
+        return switch (ticketSnapshot.status()) {
+            case NEW -> new NewTicket(ticketSnapshot);
+            case OPEN -> new OpenedTicket(ticketSnapshot);
+            case CLOSED -> new ClosedTicket(ticketSnapshot);
+            case REJECTED -> new RejectedTicket(ticketSnapshot);
+            case CANCELED -> new CanceledTicket(ticketSnapshot);
+        };
+    }
+
+    public TicketSnapshot snapshot() {
+        return new TicketSnapshot(
+                ticketId,
+                creatorId,
+                operatorId,
+                createAt,
+                openedAt,
+                terminatedAt,
+                expiryAt,
+                content,
+                TicketSnapshot.Status.valueOf(status.name()),
+                actionHistory
         );
     }
-
-    public void openBy(OperatorId operatorId) {
-        if (currentStatus != Status.NEW) {
-            throw new IllegalStateException("Cannot open in status: " + currentStatus);
-        }
-        changeStatus(UserId.of(operatorId.id()), Status.OPEN, Instant.now());
-    }
-
-    public void closeBy(OperatorId operatorId) {
-        if (currentStatus != Status.NEW && currentStatus != Status.OPEN) {
-            throw new IllegalStateException("Cannot close in status: " + currentStatus);
-        }
-        changeStatus(UserId.of(operatorId.id()), Status.CLOSED, Instant.now());
-    }
-
-    public void cancelBy(CreatorId creatorId) {
-        if (this.creatorId != creatorId) {
-            throw new IllegalArgumentException("Only creator can cancel ticket.");
-        }
-        this.currentStatus = Status.CANCELED;
-        Action cancel = new Action(UserId.of(operatorId.id()), Status.CANCELED, Instant.now());
-        actionHistory.addAction(cancel);
-    }
-
-    public void rejectBy(OperatorId operatorId) {
-        if (currentStatus == Status.CANCELED || currentStatus == Status.CLOSED) {
-            throw new IllegalStateException("Cannot reject in status: " + currentStatus);
-        }
-
-        this.operatorId = operatorId;
-        this.currentStatus = Status.REJECTED;
-        Action rejected = new Action(UserId.of(operatorId.id()), Status.REJECTED, Instant.now());
-        actionHistory.addAction(rejected);
-    }
-
-    public enum Status {
-        NEW, OPEN, CLOSED, REJECTED, CANCELED
-    }
-
-    private void changeStatus(UserId userId, Status status, Instant timestamp) {
-        switch (status) {
-            case NEW -> {
-                createAt = new CreatedAt(timestamp);
-                creatorId = CreatorId.of(userId.id());
-            }
-            case OPEN -> {
-                openedAt = new OpenedAt(timestamp);
-                operatorId = OperatorId.of(userId.id());
-            }
-            case CLOSED, REJECTED, CANCELED -> terminatedAt = new TerminatedAt(timestamp);
-            default -> {
-                // do nothing
-            }
-        }
-        currentStatus = status;
-        Action action = new Action(userId, status, timestamp);
-        actionHistory.addAction(action);
-    }
-    //addAnalysisBy()
-    //addQuestionBy()
-    //addAnswersBy()
 }

@@ -2,6 +2,7 @@ package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket
 
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Action;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
+import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.TicketSnapshot;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.ActionEntity;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.ContentEntity;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.Status;
@@ -11,27 +12,27 @@ import java.util.List;
 
 public class TicketMapper {
     public static TicketEntity mapToTicketEntity(Ticket ticket) {
-
-        List<ActionEntity> actionsEntity = ticket.getActionHistory()
+        TicketSnapshot ticketSnapshot = ticket.snapshot();
+        List<ActionEntity> actionsEntity = ticketSnapshot.actionHistory()
                 .getActions()
                 .stream()
                 .map(TicketMapper::mapToActionEntity).toList();
 
         ContentEntity contentEntity = new ContentEntity(
-                ticket.getContent().id().id(),
-                ticket.getContent().properties()
+                ticketSnapshot.content().id().id(),
+                ticketSnapshot.content().properties()
         );
 
         return new TicketEntity(
-                ticket.getTicketId() == null ? null : ticket.getTicketId().id(),
-                ticket.getCreatorId().id(),
-                ticket.getOperatorId().id(),
-                ticket.getCreateAt().time(),
-                ticket.getOpenedAt().time(),
-                ticket.getTerminatedAt().time(),
-                ticket.getExpiryAt().time(),
+                ticketSnapshot.ticketId() == null ? null : ticketSnapshot.ticketId().id(),
+                ticketSnapshot.creatorIdToNullableLong(),
+                ticketSnapshot.operatorIdToNullableLong(),
+                ticketSnapshot.createAt().time(),
+                ticketSnapshot.openedAtToNullableLong(),
+                ticketSnapshot.terminatedAtToNullableLong(),
+                ticketSnapshot.expiryAtToNullableLong(),
                 contentEntity,
-                Status.valueOf(ticket.getCurrentStatus().name()),
+                Status.valueOf(ticketSnapshot.status().name()),
                 actionsEntity
         );
     }

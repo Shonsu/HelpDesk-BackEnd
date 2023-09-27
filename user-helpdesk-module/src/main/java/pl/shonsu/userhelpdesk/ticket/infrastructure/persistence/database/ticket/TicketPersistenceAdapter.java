@@ -5,6 +5,7 @@ import pl.shonsu.userhelpdesk.ticket.domain.model.creator.CreatorId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.operator.OperatorId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.*;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
+import pl.shonsu.userhelpdesk.ticket.domain.model.user.UserId;
 import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
 import pl.shonsu.userhelpdesk.ticket.domain.port.out.LoadTicketPort;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.TicketEntity;
@@ -25,10 +26,10 @@ public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPor
         ticketEntityRepository.save(ticketEntity);
     }
 
-    public TicketSnapshot loadTicket(TicketId ticketId) {
+    public Ticket loadTicket(TicketId ticketId) {
         TicketEntity ticket = ticketEntityRepository.findById(ticketId.id()).orElseThrow(
                 () -> new EntityNotFoundException("Ticket [%s]not found.".formatted(ticketId.id())));
-        return new TicketSnapshot(
+        TicketSnapshot ticketSnapshot = new TicketSnapshot(
                 TicketId.of(ticket.getId()),
                 CreatorId.of(ticket.getCreatorId()),
                 OperatorId.of(ticket.getOperatorId()),
@@ -37,8 +38,16 @@ public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPor
                 TerminatedAt.of(ticket.getTerminateDate()),
                 ExpiryAt.of(ticket.getExpiryDate()),
                 new Content(TicketFormId.of(ticket.getContentEntity().getTicketFormId()), ticket.getContentEntity().getProperties()),
-                TicketSnapshot.Status.valueOf(ticket.getStatus().name())
+                TicketSnapshot.Status.valueOf(ticket.getStatus().name()),
+                new ActionHistory(ticket.getActions().stream()
+                        .map(actionEntity -> new Action(
+                                UserId.of(actionEntity.getUserId()),
+                                Status.valueOf(actionEntity.getWhat().name()),
+                                actionEntity.getTimestamp(),
+                                actionEntity.getDescription()
+                        )).toList())
         );
+        return Ticket.from(ticketSnapshot);
     }
 
 }

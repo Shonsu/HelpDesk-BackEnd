@@ -43,8 +43,5 @@ public class TicketEntity {
     @JoinColumn(name = "ticket_id")
     private List<ActionEntity> actions;
 
-
-
     //TODO attachments names
-
 }

@@ -1,9 +1,11 @@
 package pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.Instant;
 
+@Getter
 @Entity(name = "`action`")
 public class ActionEntity {
     @Id
