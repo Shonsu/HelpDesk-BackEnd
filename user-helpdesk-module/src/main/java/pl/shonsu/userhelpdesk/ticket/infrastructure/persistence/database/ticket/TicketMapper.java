@@ -38,11 +38,13 @@ public class TicketMapper {
     }
 
     private static ActionEntity mapToActionEntity(Action action) {
-        return ActionEntity.withoutId(
+        return new ActionEntity(
+                action.actionId() == null ? null : action.actionId().id(),
                 action.who().id(),
                 Status.valueOf(action.what().name()),
                 action.description(),
                 action.timestamp(),
-                null);
+                action.ticketId() == null ? null : action.ticketId().id()
+                );
     }
 }

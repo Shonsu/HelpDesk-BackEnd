@@ -16,14 +16,13 @@ public final class NewTicket extends Ticket {
         super(ticketSnapshot);
     }
 
-    Ticket open(OperatorId operatorId) {
+    public Ticket open(OperatorId operatorId) {
         addActionToHistory(UserId.of(operatorId.id()), Status.OPEN);
-        return new OpenedTicket(this, operatorId, Status.OPEN);
+        return new OpenedTicket(this, operatorId, Status.OPEN, OpenedAt.of(Instant.now()));
     }
 
     private void addActionToHistory(UserId userId, Status status) {
         Action action = new Action(userId, status, Instant.now());
         actionHistory.addAction(action);
     }
-
 }

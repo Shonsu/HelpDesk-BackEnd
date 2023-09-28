@@ -1,7 +1,6 @@
 package pl.shonsu.userhelpdesk.ticket.domain.model.ticket;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -13,7 +12,8 @@ public class ActionHistory {
     }
 
     public ActionHistory(List<Action> actions) {
-        this.actions = actions;
+        this();
+        this.actions.addAll(actions);
     }
 
     public void addAction(Action action) {
@@ -21,6 +21,6 @@ public class ActionHistory {
     }
 
     public List<Action> getActions() {
-        return Collections.unmodifiableList(actions);
+        return actions;
     }
 }

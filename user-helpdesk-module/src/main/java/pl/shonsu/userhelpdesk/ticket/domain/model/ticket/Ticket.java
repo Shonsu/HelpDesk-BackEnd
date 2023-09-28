@@ -50,13 +50,13 @@ public abstract sealed class Ticket permits NewTicket, CanceledTicket, OpenedTic
                 actionHistory);
     }
 
-    Ticket(NewTicket ticket, OperatorId operatorId, Status status) {
+    Ticket(NewTicket ticket, OperatorId operatorId, Status status, OpenedAt openedAt) {
         this(
                 ticket.ticketId,
                 operatorId,
                 ticket.creatorId,
                 ticket.createAt,
-                ticket.openedAt,
+                openedAt,
                 null,
                 ExpiryAt.of(Instant.now().plus(Period.ofDays(3))),
                 ticket.content,
@@ -120,6 +120,9 @@ public abstract sealed class Ticket permits NewTicket, CanceledTicket, OpenedTic
         };
     }
 
+    public Ticket open(OperatorId operatorId){
+        throw new UnsupportedOperationException("Unsupported state of ticket transition");
+    }
     public TicketSnapshot snapshot() {
         return new TicketSnapshot(
                 ticketId,

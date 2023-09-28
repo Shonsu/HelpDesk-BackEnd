@@ -6,8 +6,8 @@ import pl.shonsu.userhelpdesk.ticket.domain.model.user.UserId;
 import java.time.Instant;
 
 public final class OpenedTicket extends Ticket {
-    public OpenedTicket(NewTicket ticket, OperatorId operatorId, Status open) {
-        super(ticket, operatorId, open);
+    public OpenedTicket(NewTicket ticket, OperatorId operatorId, Status open, OpenedAt openedAt) {
+        super(ticket, operatorId, open, openedAt);
     }
 
     public OpenedTicket(TicketSnapshot ticketSnapshot) {

@@ -6,14 +6,15 @@ import pl.shonsu.userhelpdesk.ticket.domain.model.operator.OperatorId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.*;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.user.UserId;
-import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
-import pl.shonsu.userhelpdesk.ticket.domain.port.out.LoadTicketPort;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.CreateTicketPort;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.LoadTicketPort;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.UpdateTicketPort;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.entity.TicketEntity;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.repository.TicketEntityRepository;
 
 import static pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.TicketMapper.mapToTicketEntity;
 
-public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPort {
+public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPort, UpdateTicketPort {
     private final TicketEntityRepository ticketEntityRepository;
 
     public TicketPersistenceAdapter(TicketEntityRepository ticketEntityRepository) {
@@ -26,6 +27,7 @@ public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPor
         ticketEntityRepository.save(ticketEntity);
     }
 
+    @Override
     public Ticket loadTicket(TicketId ticketId) {
         TicketEntity ticket = ticketEntityRepository.findById(ticketId.id()).orElseThrow(
                 () -> new EntityNotFoundException("Ticket [%s]not found.".formatted(ticketId.id())));
@@ -41,13 +43,21 @@ public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPor
                 TicketSnapshot.Status.valueOf(ticket.getStatus().name()),
                 new ActionHistory(ticket.getActions().stream()
                         .map(actionEntity -> new Action(
+                                Action.ActionId.of(actionEntity.getId()),
                                 UserId.of(actionEntity.getUserId()),
                                 Status.valueOf(actionEntity.getWhat().name()),
+                                actionEntity.getDescription(),
                                 actionEntity.getTimestamp(),
-                                actionEntity.getDescription()
+                                TicketId.of(actionEntity.getTicketEntityId())
                         )).toList())
         );
         return Ticket.from(ticketSnapshot);
     }
 
+    @Override
+    public void updateTicket(Ticket ticket) {
+        TicketEntity ticketEntity = mapToTicketEntity(ticket);
+        ticketEntity.getActions().forEach(System.out::println);
+        TicketEntity save = ticketEntityRepository.save(ticketEntity);
+    }
 }
