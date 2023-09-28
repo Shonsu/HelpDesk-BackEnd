@@ -1,10 +1,10 @@
-package pl.shonsu.userhelpdesk.ticket.domain.service;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.application.service;
 
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
-import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketCommand;
-import pl.shonsu.userhelpdesk.ticket.domain.port.in.RegisterTicketUseCase;
-import pl.shonsu.userhelpdesk.ticket.domain.port.in.TicketContentVerifier;
-import pl.shonsu.userhelpdesk.ticket.domain.port.out.CreateTicketPort;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.RegisterTicketCommand;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.RegisterTicketUseCase;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.TicketContentVerifier;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.CreateTicketPort;
 
 public class RegisterTicketService implements RegisterTicketUseCase {
     private final CreateTicketPort createTicketPort;
@@ -16,10 +16,10 @@ public class RegisterTicketService implements RegisterTicketUseCase {
     }
 
     @Override
-    public boolean registerTicket(RegisterTicketCommand registerTicketCommand) {
+    public boolean registerTicket(RegisterTicketCommand command) {
         Ticket ticket = Ticket.create(
-                registerTicketCommand.creatorId(),
-                registerTicketCommand.content()
+                command.creatorId(),
+                command.content()
         );
         ticketContentVerifier.isTicketContentValid(ticket.getContent());
         createTicketPort.createTicket(ticket);

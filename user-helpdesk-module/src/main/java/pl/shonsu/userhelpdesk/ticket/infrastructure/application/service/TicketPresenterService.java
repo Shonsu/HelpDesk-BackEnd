@@ -1,8 +1,8 @@
-package pl.shonsu.userhelpdesk.ticket.domain.service;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.application.service;
 
 import pl.shonsu.userhelpdesk.ticket.domain.model.user.UserId;
-import pl.shonsu.userhelpdesk.ticket.domain.port.in.TicketPresenterQuery;
-import pl.shonsu.userhelpdesk.ticket.domain.port.in.TicketViewResponse;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.TicketPresenterQuery;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.TicketViewResponse;
 
 import java.util.List;
 

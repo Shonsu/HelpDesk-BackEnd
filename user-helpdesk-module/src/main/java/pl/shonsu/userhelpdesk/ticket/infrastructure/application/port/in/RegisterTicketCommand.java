@@ -1,4 +1,4 @@
-package pl.shonsu.userhelpdesk.ticket.domain.port.in;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in;
 
 import jakarta.validation.constraints.NotNull;
 import pl.shonsu.userhelpdesk.ticket.domain.model.creator.CreatorId;

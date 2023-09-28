@@ -34,6 +34,6 @@ public record TicketSnapshot(
         return expiryAt != null ? expiryAt.time() : null;
     }
     public enum Status {
-        NEW, OPEN, CLOSED, REJECTED, CANCELED;
+        NEW, OPEN, CLOSED, REJECTED, CANCELED
     }
 }

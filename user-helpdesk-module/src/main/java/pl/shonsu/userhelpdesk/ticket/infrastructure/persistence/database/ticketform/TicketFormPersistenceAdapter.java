@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketForm;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormField;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
-import pl.shonsu.userhelpdesk.ticket.domain.port.out.LoadTicketFormPort;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.LoadTicketFormPort;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.entity.TicketFormEntity;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.entity.TicketFormFieldEntity;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticketform.entity.TicketFormFieldOptionEntity;

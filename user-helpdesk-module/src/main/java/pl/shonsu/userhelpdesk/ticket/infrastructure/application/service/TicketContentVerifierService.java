@@ -1,10 +1,10 @@
-package pl.shonsu.userhelpdesk.ticket.domain.service;
+package pl.shonsu.userhelpdesk.ticket.infrastructure.application.service;
 
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Content;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketForm;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormField;
-import pl.shonsu.userhelpdesk.ticket.domain.port.in.TicketContentVerifier;
-import pl.shonsu.userhelpdesk.ticket.domain.port.out.LoadTicketFormPort;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.TicketContentVerifier;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.LoadTicketFormPort;
 
 import java.util.List;
 import java.util.Map;
