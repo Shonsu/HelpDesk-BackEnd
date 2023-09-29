@@ -6,6 +6,9 @@ public class ContentEntity {
     private Long ticketFormId;
     private Map<String, String> properties;
 
+    public ContentEntity() {
+    }
+
     public ContentEntity(Long ticketFormId, Map<String, String> properties) {
         this.ticketFormId = ticketFormId;
         this.properties = properties;

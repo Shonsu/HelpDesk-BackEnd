@@ -9,10 +9,7 @@ import pl.shonsu.userhelpdesk.ticket.domain.model.operator.OperatorId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Content;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.TicketId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.OpenTicketCommand;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.OpenTicketUseCase;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.RegisterTicketCommand;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.RegisterTicketUseCase;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.*;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.web.dto.ContentResource;
 
 @RestController
@@ -21,10 +18,12 @@ class TicketCommandEndpoint {
     private final RegisterTicketUseCase registerTicketUseCase;
 
     private final OpenTicketUseCase openTicketUseCase;
+    private final CloseTicketUseCase closeTicketUseCase;
 
-    TicketCommandEndpoint(RegisterTicketUseCase registerTicketUseCase, OpenTicketUseCase openTicketUseCase) {
+    TicketCommandEndpoint(RegisterTicketUseCase registerTicketUseCase, OpenTicketUseCase openTicketUseCase, CloseTicketUseCase closeTicketUseCase) {
         this.registerTicketUseCase = registerTicketUseCase;
         this.openTicketUseCase = openTicketUseCase;
+        this.closeTicketUseCase = closeTicketUseCase;
     }
 
     @PostMapping("/register")
@@ -42,6 +41,12 @@ class TicketCommandEndpoint {
     void openTicket(@PathVariable Long id, @AuthenticationPrincipal Long principal) {
         OpenTicketCommand command = new OpenTicketCommand(TicketId.of(id), OperatorId.of(principal));
         openTicketUseCase.openTicket(command);
+    }
+
+    @PostMapping("/close/{id}")
+    void closeTicket(@PathVariable Long id, @AuthenticationPrincipal Long principal, @RequestBody String description) {
+        CloseTicketCommand command = new CloseTicketCommand(TicketId.of(id), OperatorId.of(principal), description);
+        closeTicketUseCase.closeTicket(command);
     }
 
 }

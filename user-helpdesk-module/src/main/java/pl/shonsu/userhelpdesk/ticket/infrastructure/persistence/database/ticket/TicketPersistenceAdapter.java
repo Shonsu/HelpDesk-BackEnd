@@ -57,7 +57,7 @@ public class TicketPersistenceAdapter implements CreateTicketPort, LoadTicketPor
     @Override
     public void updateTicket(Ticket ticket) {
         TicketEntity ticketEntity = mapToTicketEntity(ticket);
-        ticketEntity.getActions().forEach(System.out::println);
+        //ticketEntity.getActions().forEach(System.out::println);
         TicketEntity save = ticketEntityRepository.save(ticketEntity);
     }
 }
