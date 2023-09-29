@@ -123,6 +123,9 @@ public abstract sealed class Ticket permits NewTicket, CanceledTicket, OpenedTic
     public Ticket open(OperatorId operatorId){
         throw new UnsupportedOperationException("Unsupported state of ticket transition");
     }
+    public Ticket close(OperatorId operatorId, String desciption){
+        throw new UnsupportedOperationException("Unsupported state of ticket transition");
+    }
     public TicketSnapshot snapshot() {
         return new TicketSnapshot(
                 ticketId,
