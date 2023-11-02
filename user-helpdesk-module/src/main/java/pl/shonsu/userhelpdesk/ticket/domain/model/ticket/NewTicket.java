@@ -20,7 +20,10 @@ public final class NewTicket extends Ticket {
         addActionToHistory(UserId.of(operatorId.id()), Status.OPEN);
         return new OpenedTicket(this, operatorId, Status.OPEN, OpenedAt.of(Instant.now()));
     }
-
+    public CanceledTicket cancel() {
+        addActionToHistory(UserId.of(creatorId.id()), Status.CANCELED);
+        return new CanceledTicket(this, Status.CANCELED);
+    }
     private void addActionToHistory(UserId userId, Status status) {
         Action action = new Action(userId, status, Instant.now());
         actionHistory.addAction(action);

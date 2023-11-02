@@ -78,7 +78,7 @@ public abstract sealed class Ticket permits NewTicket, CanceledTicket, OpenedTic
                 ticket.actionHistory);
     }
 
-    Ticket(OpenedTicket ticket, Status status) {
+    Ticket(Ticket ticket, Status status) {
         this(
                 ticket.ticketId,
                 ticket.operatorId,
@@ -120,12 +120,18 @@ public abstract sealed class Ticket permits NewTicket, CanceledTicket, OpenedTic
         };
     }
 
-    public Ticket open(OperatorId operatorId){
+    public Ticket open(OperatorId operatorId) {
         throw new UnsupportedOperationException("Unsupported state of ticket transition");
     }
-    public Ticket close(OperatorId operatorId, String desciption){
+
+    public Ticket close(OperatorId operatorId, String desciption) {
         throw new UnsupportedOperationException("Unsupported state of ticket transition");
     }
+
+    public Ticket cancel() {
+        throw new UnsupportedOperationException("Unsupported state of ticket transition");
+    }
+
     public TicketSnapshot snapshot() {
         return new TicketSnapshot(
                 ticketId,

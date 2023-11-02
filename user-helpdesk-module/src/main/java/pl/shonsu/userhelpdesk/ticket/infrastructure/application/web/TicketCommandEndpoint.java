@@ -16,14 +16,15 @@ import pl.shonsu.userhelpdesk.ticket.infrastructure.application.web.dto.ContentR
 @RequestMapping("/tickets/commands")
 class TicketCommandEndpoint {
     private final RegisterTicketUseCase registerTicketUseCase;
-
     private final OpenTicketUseCase openTicketUseCase;
     private final CloseTicketUseCase closeTicketUseCase;
+    private final CancelTicketUseCase cancelTicketUseCase;
 
-    TicketCommandEndpoint(RegisterTicketUseCase registerTicketUseCase, OpenTicketUseCase openTicketUseCase, CloseTicketUseCase closeTicketUseCase) {
+    TicketCommandEndpoint(RegisterTicketUseCase registerTicketUseCase, OpenTicketUseCase openTicketUseCase, CloseTicketUseCase closeTicketUseCase, CancelTicketUseCase cancelTicketUseCase) {
         this.registerTicketUseCase = registerTicketUseCase;
         this.openTicketUseCase = openTicketUseCase;
         this.closeTicketUseCase = closeTicketUseCase;
+        this.cancelTicketUseCase = cancelTicketUseCase;
     }
 
     @PostMapping("/register")
@@ -49,4 +50,9 @@ class TicketCommandEndpoint {
         closeTicketUseCase.closeTicket(command);
     }
 
+    @PostMapping("/cancel/{id}")
+    void cancelTicket(@PathVariable Long id, @AuthenticationPrincipal Long principal, @RequestBody String description) {
+        CancelTicketCommand command = new CancelTicketCommand(TicketId.of(id), CreatorId.of(principal), description);
+        cancelTicketUseCase.cancelTicket(command);
+    }
 }

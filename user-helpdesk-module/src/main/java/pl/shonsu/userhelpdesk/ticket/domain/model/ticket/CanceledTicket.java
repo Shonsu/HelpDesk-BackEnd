@@ -1,7 +1,7 @@
 package pl.shonsu.userhelpdesk.ticket.domain.model.ticket;
 
 public final class CanceledTicket extends Ticket {
-    CanceledTicket(OpenedTicket ticket, Status canceled) {
+    CanceledTicket(Ticket ticket, Status canceled) {
         super(ticket, canceled);
     }
 

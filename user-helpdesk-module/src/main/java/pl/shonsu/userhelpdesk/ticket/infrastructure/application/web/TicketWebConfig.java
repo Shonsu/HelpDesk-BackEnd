@@ -2,6 +2,7 @@ package pl.shonsu.userhelpdesk.ticket.infrastructure.application.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.CancelTicketUseCase;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.CloseTicketUseCase;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.OpenTicketUseCase;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.RegisterTicketUseCase;
@@ -9,10 +10,7 @@ import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.CreateT
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.LoadTicketFormPort;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.LoadTicketPort;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.UpdateTicketPort;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.service.CloseTicketService;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.service.OpenTicketService;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.service.RegisterTicketService;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.service.TicketContentVerifierService;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.service.*;
 
 @Configuration
 class TicketWebConfig {
@@ -31,4 +29,9 @@ class TicketWebConfig {
         return new CloseTicketService(loadTicketPort, updateTicketPort);
     }
 
+    @Bean
+    CancelTicketUseCase cancelTicketUseCase(LoadTicketPort loadTicketPort, UpdateTicketPort updateTicketPort) {
+        return new CancelTicketService(loadTicketPort, updateTicketPort);
+
+    }
 }
