@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.persistence.database.ticket.repository.dto.TicketEntityShortInfo;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,6 +19,20 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@SqlResultSetMappings({@SqlResultSetMapping(
+        name = "TicketEntityShortInfo",
+        classes = {
+                @ConstructorResult(
+                        columns = {
+                                @ColumnResult(name = "id"),
+                                @ColumnResult(name = "ticketFormId"),
+                                @ColumnResult(name = "createdAt"),
+                                @ColumnResult(name = "status", type = Status.class),
+                        },
+                        targetClass = TicketEntityShortInfo.class
+                )
+        }
+)})
 public class TicketEntity {
 
     @Id
