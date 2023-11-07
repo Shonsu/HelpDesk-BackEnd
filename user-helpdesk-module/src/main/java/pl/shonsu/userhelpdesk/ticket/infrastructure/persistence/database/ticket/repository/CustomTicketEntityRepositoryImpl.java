@@ -57,7 +57,6 @@ public class CustomTicketEntityRepositoryImpl implements CustomTicketEntityRepos
     }
 
     @Override
-
     public List<TicketEntityShortInfo> getAllUserTicketsShortInfo(Long userId) {
 
         @SuppressWarnings("unchecked")

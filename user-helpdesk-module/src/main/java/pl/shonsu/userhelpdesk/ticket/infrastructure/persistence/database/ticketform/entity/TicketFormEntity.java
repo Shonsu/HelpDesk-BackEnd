@@ -19,7 +19,8 @@ public class TicketFormEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_from_generator")
     private Long id;
-
+    private Long subCategoryId;
+    private String label;
     @OneToMany
     @JoinColumn(name = "ticket_form_id")
     @Fetch(FetchMode.SUBSELECT)

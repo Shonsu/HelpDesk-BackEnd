@@ -14,24 +14,32 @@ import pl.shonsu.userhelpdesk.ticket.infrastructure.application.service.*;
 
 @Configuration
 class TicketWebConfig {
+
+    private final LoadTicketPort loadTicketPort;
+    private final UpdateTicketPort updateTicketPort;
+
+    TicketWebConfig(LoadTicketPort loadTicketPort, UpdateTicketPort updateTicketPort) {
+        this.loadTicketPort = loadTicketPort;
+        this.updateTicketPort = updateTicketPort;
+    }
+
     @Bean
     RegisterTicketUseCase registerTicketUseCase(CreateTicketPort createTicketPort, LoadTicketFormPort loadTicketFormPort) {
         return new RegisterTicketService(createTicketPort, new TicketContentVerifierService(loadTicketFormPort));
     }
 
     @Bean
-    OpenTicketUseCase openTicketUseCase(LoadTicketPort loadTicketPort, UpdateTicketPort updateTicketPort) {
+    OpenTicketUseCase openTicketUseCase() {
         return new OpenTicketService(loadTicketPort, updateTicketPort);
     }
 
     @Bean
-    CloseTicketUseCase closeTicketUseCase(LoadTicketPort loadTicketPort, UpdateTicketPort updateTicketPort) {
+    CloseTicketUseCase closeTicketUseCase() {
         return new CloseTicketService(loadTicketPort, updateTicketPort);
     }
 
     @Bean
-    CancelTicketUseCase cancelTicketUseCase(LoadTicketPort loadTicketPort, UpdateTicketPort updateTicketPort) {
+    CancelTicketUseCase cancelTicketUseCase() {
         return new CancelTicketService(loadTicketPort, updateTicketPort);
-
     }
 }

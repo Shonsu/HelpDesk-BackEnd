@@ -38,28 +38,22 @@ public class TicketPresenterService implements TicketPresenterQuery {
         Set<Long> subCategoryIds = ticketForms.stream().map(TicketFormEntity::getSubCategoryId).collect(Collectors.toSet());
 
         List<TicketSubCategoryEntity> subCategories = ticketSubCategoryEntityRepository.findByIdIn(subCategoryIds);
-        //subCategories.forEach(System.out::println);
 
-        List<TicketViewResponse> ticketsView = userTickets.stream()
-                .map(ticket -> new TicketViewResponse(ticket.id(),
-                        "title",
-                        ticket.createdAt(),
-                        ticket.status()))
-                .toList();
-        List<String> list1 = userTickets.stream()
+        List<TicketViewResponse> result = userTickets.stream()
                 .map(ticket ->
                         ticketForms.stream()
                                 .filter(form -> form.getId().equals(ticket.ticketFormId()))
                                 .map(form -> subCategories.stream()
-                                        .filter(subCategory -> subCategory.getId().equals(form.getId()))
+                                        .filter(subCategory -> subCategory.getId().equals(form.getSubCategoryId()))
                                         .map(subCategory ->
-                                                {
-                                                    System.out.println("test");
-                                                    return ticket.id() + "/" +
-                                                            ticket.ticketFormId() + "/" +
-                                                            subCategory.getTicketCategory().getLabel() + "/" +
-                                                            subCategory.getLabel();
-                                                }
+                                                new TicketViewResponse(ticket.id(),
+//                                                        ticket.id() + "/" +
+//                                                                ticket.ticketFormId() + "/" +
+                                                                subCategory.getTicketCategory().getLabel() + "/" +
+                                                                subCategory.getLabel() + "/" +
+                                                                form.getLabel(),
+                                                        ticket.createdAt(),
+                                                        ticket.status())
                                         )
                                         .toList()
                                 )
@@ -69,16 +63,7 @@ public class TicketPresenterService implements TicketPresenterQuery {
                 )
                 .flatMap(Collection::stream)
                 .toList();
-
-        //.map(subCat -> ticket.id() + "/" +
-//                                        ticket.ticketFormId() + "/" +
-//                                        subCat.getTicketCategory().getLabel() + "/" +
-//                                        subCat.getLabel())
-        //)
-
-
-       // list1.forEach(System.out::println);
-        return ticketsView;
+        return result;
     }
 
     @Override
