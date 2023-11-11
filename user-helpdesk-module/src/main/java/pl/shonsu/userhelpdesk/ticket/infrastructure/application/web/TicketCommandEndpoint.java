@@ -10,6 +10,10 @@ import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Content;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.TicketId;
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticketform.TicketFormId;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.*;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.commands.CancelTicketCommand;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.commands.CloseTicketCommand;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.commands.OpenTicketCommand;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.commands.RegisterTicketCommand;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.web.dto.ContentResource;
 
 @RestController

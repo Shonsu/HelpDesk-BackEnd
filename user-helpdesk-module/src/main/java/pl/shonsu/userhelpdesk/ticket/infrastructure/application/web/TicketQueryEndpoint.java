@@ -23,7 +23,7 @@ public class TicketQueryEndpoint {
 
     @GetMapping()
     List<TicketViewResponse> listTickets(@AuthenticationPrincipal Long userId) {
-        return ticketPresenterQuery.getUserTickets(UserId.of(userId));
+        return ticketPresenterQuery.getUserTickets2(UserId.of(userId));
     }
 
     @GetMapping("{ticketId}")
