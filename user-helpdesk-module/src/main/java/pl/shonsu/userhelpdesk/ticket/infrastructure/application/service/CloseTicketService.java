@@ -1,7 +1,7 @@
 package pl.shonsu.userhelpdesk.ticket.infrastructure.application.service;
 
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.CloseTicketCommand;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.commands.CloseTicketCommand;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.CloseTicketUseCase;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.LoadTicketPort;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.UpdateTicketPort;

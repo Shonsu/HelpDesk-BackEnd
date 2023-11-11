@@ -1,7 +1,7 @@
 package pl.shonsu.userhelpdesk.ticket.infrastructure.application.service;
 
 import pl.shonsu.userhelpdesk.ticket.domain.model.ticket.Ticket;
-import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.RegisterTicketCommand;
+import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.commands.RegisterTicketCommand;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.RegisterTicketUseCase;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.in.TicketContentVerifier;
 import pl.shonsu.userhelpdesk.ticket.infrastructure.application.port.out.CreateTicketPort;
