@@ -29,7 +29,6 @@ public class CustomTicketEntityRepositoryImpl implements CustomTicketEntityRepos
                                 "status " +
                                 "from ticket where id = :id"
                 )
-                .setHint(AvailableHints.HINT_READ_ONLY, true)
                 .setParameter("id", id);
         try {
             Object[] obj = (Object[]) q.getSingleResult();
@@ -71,7 +70,6 @@ public class CustomTicketEntityRepositoryImpl implements CustomTicketEntityRepos
                                 "from ticket where creator_id = :id",
                         "TicketEntityShortInfo"
                 )
-                .setHint(AvailableHints.HINT_READ_ONLY, true)
                 .setParameter("id", userId)
                 .getResultList();
 
